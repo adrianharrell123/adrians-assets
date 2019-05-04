@@ -1,0 +1,226 @@
+/// Gale-Shapely Algorithm: Perfect Pairing
+
+// Each of three trainers has a ranking of their most to least preferred pokemon on a scale from 0 to 2
+// likewise each of the three pokemon has a ranking of their least to most prefered trainer
+// This algorithm is used to output the perfect pairing of trainer to pokemon where no individual of each pair // would prefer another partner as opposed to their current one.
+
+// The values are to be recorded in the variables trainer0_partner, trainer1_partner, and trainer2_partner
+
+// Set 1
+trainer[0,0] = 1;
+trainer[0,1] = 0;
+trainer[0,2] = 2;
+trainer[1,0] = 1;
+trainer[1,1] = 2;
+trainer[1,2] = 0;
+trainer[2,0] = 2;
+trainer[2,1] = 1;
+trainer[2,2] = 0;
+
+// Set 2
+pokemon[0,0] = 1;
+pokemon[0,1] = 0;
+pokemon[0,2] = 2;
+pokemon[1,0] = 2;
+pokemon[1,1] = 1;
+pokemon[1,2] = 0;
+pokemon[2,0] = 2;
+pokemon[2,1] = 0;
+pokemon[2,2] = 1;
+
+
+next_choice[0] = 0;
+next_choice[1] = 0;
+next_choice[2] = 0;
+done[0] = false;
+done[1] = false;
+done[2] = false;
+
+chosen[0] = false;
+chosen[1] = false;
+chosen[2] = false;
+
+trainer0_partner = 3;
+trainer1_partner = 3;
+trainer2_partner = 3;
+
+// While there is still a trainer unpaired...
+while(done[0] == false || done[1] == false || done[2] == false)
+{
+	if(done[0] == false)
+	{
+		// If the players next choice hasn't already been chosen...
+		if(chosen[trainer[0,next_choice[0]]] == false)
+		{
+			chosen[trainer[0,next_choice[0]]] = true;
+			done[0] = true;
+			trainer0_partner = trainer[0,next_choice[0]];
+			next_choice[0] += 1;
+		}
+		// If the players next choice has already been chosen but the choosing player is preferable...
+		else if(chosen[trainer[0,next_choice[0]]] == true)
+		{
+			denycurrent = false;
+			if(trainer1_partner == trainer[0,next_choice[0]])
+			{
+			for(n = 0; n <= 2; n++)
+			{
+				if (pokemon[trainer[0,next_choice[0]],n] == 1)
+				{
+					break;
+				}
+				else if (pokemon[trainer[0,next_choice[0]],n] == 0)
+				{
+					denycurrent = true;
+					done[1] = false;
+					break;
+				}
+			}
+			}
+			
+			if(trainer2_partner == trainer[0,next_choice[0]])
+			{
+			for(n = 0; n <= 2; n++)
+			{
+				if (pokemon[trainer[0,next_choice[0]],n] == 2)
+				{
+					break;
+				}
+				else if (pokemon[trainer[0,next_choice[0]],n] == 0)
+				{
+					denycurrent = true;
+					done[2] = false;
+					break;
+				}
+			}
+			}
+			
+			if(denycurrent)
+			{
+			chosen[trainer[0,next_choice[0]]] = true;
+			done[0] = true;
+			trainer0_partner = trainer[0,next_choice[0]];
+			next_choice[0] += 1;
+			}
+			}
+			
+		}
+	
+	
+	if(done[1] == false)
+	{
+		// If the players next choice hasn't already been chosen...
+		if(chosen[trainer[1,next_choice[1]]] == false)
+		{
+			chosen[trainer[1,next_choice[1]]] = true;
+			done[1] = true;
+			trainer1_partner = trainer[1,next_choice[1]];
+			next_choice[1] += 1;
+		}
+		// If the players next choice has already been chosen but the choosing player is preferable...
+		else if(chosen[trainer[1,next_choice[1]]] == true)
+		{
+			denycurrent = false;
+			if(trainer0_partner == trainer[1,next_choice[1]])
+			{
+			for(n = 0; n <= 2; n++)
+			{
+				if (pokemon[trainer[1,next_choice[1]],n] == 0)
+				{
+					break;
+				}
+				else if (pokemon[trainer[1,next_choice[1]],n] == 1)
+				{
+					denycurrent = true;
+					done[0] = false;
+					break;
+				}
+			}
+			}
+			
+			if(trainer2_partner == trainer[1,next_choice[1]])
+			{
+			for(n = 0; n <= 2; n++)
+			{
+				if (pokemon[trainer[1,next_choice[1]],n] == 2)
+				{
+					break;
+				}
+				else if (pokemon[trainer[1,next_choice[1]],n] == 1)
+				{
+					denycurrent = true;
+					done[2] = false;
+					break;
+				}
+			}
+			}
+			
+			if(denycurrent)
+			{
+			chosen[trainer[1,next_choice[1]]] = true;
+			done[1] = true;
+			trainer1_partner = trainer[1,next_choice[1]];
+			next_choice[1] += 1;
+			}
+			}
+	}
+	
+	if(done[2] == false)
+	{
+		// If the players next choice hasn't already been chosen...
+		if(chosen[trainer[2,next_choice[2]]] == false)
+		{
+			chosen[trainer[2,next_choice[2]]] = true;
+			done[2] = true;
+			trainer2_partner = trainer[2,next_choice[2]];
+			next_choice[2] += 1;
+		}
+		// If the players next choice has already been chosen but the choosing player is preferable...
+		else if(chosen[trainer[2,next_choice[2]]] == true)
+		{
+			denycurrent = false;
+			if(trainer0_partner == trainer[2,next_choice[2]])
+			{
+			for(n = 0; n <= 2; n++)
+			{
+				if (pokemon[trainer[2,next_choice[2]],n] == 0)
+				{
+					break;
+				}
+				else if (pokemon[trainer[2,next_choice[2]],n] == 2)
+				{
+					denycurrent = true;
+					done[0] = false;
+					break;
+				}
+			}
+			}
+			
+			if(trainer1_partner == trainer[2,next_choice[2]])
+			{
+			for(n = 0; n <= 2; n++)
+			{
+				if (pokemon[trainer[2,next_choice[2]],n] == 1)
+				{
+					break;
+				}
+				else if (pokemon[trainer[2,next_choice[2]],n] == 2)
+				{
+					denycurrent = true;
+					done[1] = false;
+					break;
+				}
+			}
+			}
+			
+			if(denycurrent)
+			{
+			chosen[trainer[2,next_choice[2]]] = true;
+			done[2] = true;
+			trainer2_partner = trainer[2,next_choice[2]];
+			next_choice[2] += 1;
+			}
+			}
+	}
+	
+}
