@@ -1,0 +1,155 @@
+From UnoGame
+/**
+	 * Method that makes the current computer player play a card from their hand.
+	 * @param player - the player corresponding to which computer's turn it is.
+	 * @return boolean - true if the computer makes a play, false if the computer draws a card.
+	 */ 
+		public void aiMove(Player player) {
+			String currcolor = discardPile.get((discardPile.size() -1)).getCardColor();
+			float cardsOfCurrColor = 0;
+			float deckSize = player.getPlayerDeck().size();
+			String majorityColor;
+			boolean hasWild = false;
+			boolean hasValidCard = false;
+			
+
+			// Figure out if the computer has a valid card to play
+			for(int i = 0; i < deckSize; i++)
+			{
+				if(isValid(player.getPlayerDeck().get(i), discardPile.get(discardPile.size() - 1)))
+				{
+					hasValidCard = true;
+					break;
+				}
+			}
+			if(hasValidCard)
+			{
+			// Find out how many cards in the ai's deck are the 
+			// same color as the current card.
+			for(int i = 0; i < deckSize; i++)
+			{
+				if(player.getPlayerDeck().get(i).getCardColor().equals(currcolor))
+				{
+					cardsOfCurrColor++;
+				}
+			}
+			
+			int blue = 0;
+			int green = 0;
+			int yellow = 0;
+			int red = 0;
+			
+			for(int i = 0; i < deckSize; i++)
+			{
+				switch(player.getPlayerDeck().get(i).getCardColor())
+				{
+					case "blue":
+					{
+						blue += 1;
+					}
+					break;
+					case "green":
+					{
+						green += 1;
+					}
+					break;
+					case "yellow":
+					{
+						yellow += 1;
+					}
+					break;
+					case "red":
+					{
+						red += 1;
+					}
+					break;
+					default:
+					{
+						
+					}
+					break;
+				}
+			}
+			
+			if(blue > green && blue > red && blue > yellow)
+			{
+				majorityColor = "blue";
+			}
+			else if(green > red && green > yellow)
+			{
+				majorityColor = "green";
+			}
+			else if (red > yellow)
+			{
+				majorityColor = "red";
+			}
+			else
+			{
+				majorityColor = "yellow";
+			}
+			
+			for(int i = 0; i < deckSize; i++)
+			{
+				if(player.getPlayerDeck().get(i).getIsWild())
+				{
+					hasWild = true;
+					break;
+				}
+			}
+			
+			// If the ratio of cards of current color to size of whole deck is unfavorable, play a wild card if possible
+			if(cardsOfCurrColor/deckSize < 0.3 && hasWild)
+			{
+				for(int i = 0; i < deckSize; i++)
+				{
+					if(player.getPlayerDeck().get(i).getIsWild())
+					{
+						playCard(player, player.getPlayerDeck().get(i));
+						discardPile.get(discardPile.size()-1).setCardColor(majorityColor);
+						return;
+					}
+				}
+			}
+			else
+			{
+					for(int n = 0; n < deckSize; n++)
+					{
+							if(player.getPlayerDeck().get(n).getIsPlus2() && isValid(player.getPlayerDeck().get(n), discardPile.get(discardPile.size() -1)))
+							{
+								playCard(player, player.getPlayerDeck().get(n));
+								return;
+							}
+					}
+					for(int n = 0; n < deckSize-1; n++)
+					{
+						if(player.getPlayerDeck().get(n).getIsSkip() && isValid(player.getPlayerDeck().get(n), discardPile.get(discardPile.size() -1)))
+						{
+							playCard(player, player.getPlayerDeck().get(n));
+							return;
+						}
+					}
+
+					for(int n = 0; n < deckSize; n++)
+					{
+						if(player.getPlayerDeck().get(n).getIsReverse() && isValid(player.getPlayerDeck().get(n), discardPile.get(discardPile.size() -1)))
+						{
+							playCard(player, player.getPlayerDeck().get(n));
+							return;
+						}
+					}
+					
+					for(int n = 0; n < deckSize; n++)
+					{
+						if(isValid(player.getPlayerDeck().get(n), discardPile.get(discardPile.size() -1)))
+						{
+							playCard(player, player.getPlayerDeck().get(n));
+							return;
+						}
+					}	
+				}
+			}
+			else
+			{
+				drawCard(player, 1);
+			}
+		}
