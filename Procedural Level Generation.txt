@@ -1,0 +1,446 @@
+/// Code used in the littlefoot game to generate random platformer levels.
+
+/// @description  Initialize the level based on the current room
+switch(room)
+{
+
+    // Campfire
+    case rm_campfire:
+    {
+        for(i = 0; i < room_width/128; i++)
+        {
+        if(i > (room_width/128)/2)
+        {
+        instance_create(room_width/2,y-70,obj_campfire);
+        instance_create(room_width/2,y-70,obj_campfire1);
+        instance_create(room_width/2,y-70,obj_button);
+        }
+        instance_create(x+i*128,y,obj_grasstile01);
+        instance_create(x+i*128,y-57,obj_grassback02);
+        instance_create(x+i*128+64,y,obj_grasstile02);
+        instance_create(x+i*128+64,y-57,obj_grassback01);
+        }
+    }
+    break;
+    
+    case rm_campfire2:
+    {
+        for(i = 0; i < room_width/128; i++)
+        {
+        if(i > (room_width/128)/2)
+        {
+        instance_create(room_width/2,y-70,obj_campfire);
+        instance_create(room_width/2,y-70,obj_campfire1);
+        instance_create(room_width/2,y-70,obj_button);
+        }
+        instance_create(x+i*128,y,obj_grasstile03);
+        instance_create(x+i*128,y-57,obj_grassback04);
+        instance_create(x+i*128+64,y,obj_grasstile04);
+        instance_create(x+i*128+64,y-57,obj_grassback03);
+        }
+    }
+    break;
+    
+    // Level 1
+    case rm_level01:
+    {
+    randomize();
+    floor_bump = 0;
+    point1 = irandom_range(3,8);
+    point2 = irandom_range(10,15);
+    point3 = irandom_range(17,22);
+    point4 = irandom_range(24,29);
+    create = true;
+    current_point1 = point1;
+    current_point2 = point2;
+    grass_space_start = 1.5;
+    grass_space = grass_space_start;
+    grass_space_start2 = 0.5;
+    grass_space2 = grass_space_start2;
+    
+    for(i = 0; i < room_width/128; i++)
+    {
+        grass_space -= 0.5;
+        chance = random_range(0,100);
+        if(i > room_width/128 - 1)
+        {
+        instance_create(x+i*128,y-53+floor_bump*64,obj_arrow);
+        }
+        instance_create(x+i*128,y+floor_bump*64,obj_grasstile01);
+        instance_create(x+i*128,y-57+floor_bump*64,obj_grassback02);
+        if (chance > 85 && i >= point1)
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_rocksquid);
+        }
+        else
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile02);
+        }
+        instance_create(x+i*128+64,y-57+floor_bump*64,obj_grassback01);
+        if(grass_space == 0)
+            {
+                if(chance > 50)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_treestump);
+                }
+                if(chance <= 50)
+                {
+                instance_create(x+i*128+64,y-55+floor_bump*64,obj_smalltree);
+                }
+            grass_space = grass_space_start;
+            }
+        if(i == point1 or i == point2 or i == point3 or i == point4)
+            {
+                if(floor_bump == 2)
+                {
+                floor_bump -= 1;
+                }
+                else
+                {
+                floor_bump += irandom_range(-1,1);
+                }
+            create = true;
+            }
+    }
+    instance_create(0,0,obj_pitspawn);
+    instance_destroy();
+    }
+    break;
+    
+    // Level 2
+    case rm_level02:
+    {
+    randomize();
+    floor_bump = 0;
+    point1 = irandom_range(3,8);
+    point2 = irandom_range(10,15);
+    point3 = irandom_range(17,22);
+    point4 = irandom_range(24,29);
+    create = true;
+    current_point1 = point1;
+    current_point2 = point2;
+    grass_space_start = 1.5;
+    grass_space = grass_space_start;
+    grass_space_start2 = 0.5;
+    grass_space2 = grass_space_start2;
+    
+    for(i = 0; i < room_width/128; i++)
+    {
+        grass_space -= 0.5;
+        chance = random_range(0,100);
+        if(i > room_width/128 - 1)
+        {
+        instance_create(x+i*128-32,y-53+floor_bump*64,obj_arrow);
+        }
+        instance_create(x+i*128,y+floor_bump*64,obj_grasstile01);
+        instance_create(x+i*128,y-57+floor_bump*64,obj_grassback02);
+        if (chance > 77 && i >= point1)
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_rocksquid);
+        }
+        else
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile02);
+        }
+        instance_create(x+i*128+64,y-57+floor_bump*64,obj_grassback01);
+        if(grass_space == 0)
+            {
+                if(chance > 60)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_treestump);
+                }
+                if(chance <= 50)
+                {
+                instance_create(x+i*128+64,y-55+floor_bump*64,obj_smalltree);
+                }
+            grass_space = grass_space_start;
+            }
+        if(i == point1 or i == point2 or i == point3 or i == point4)
+            {
+                if(floor_bump == 2)
+                {
+                floor_bump -= 1;
+                }
+                else
+                {
+                floor_bump += irandom_range(-1,1);
+                }
+            create = true;
+            }
+    }
+    instance_create(0,0,obj_pitspawn);
+    instance_destroy();
+    }
+    break;
+    
+    // Level 3
+    case rm_level03:
+    {
+    randomize();
+    floor_bump = 0;
+    point1 = irandom_range(3,8);
+    point2 = irandom_range(10,15);
+    point3 = irandom_range(17,22);
+    point4 = irandom_range(24,29);
+    create = true;
+    current_point1 = point1;
+    current_point2 = point2;
+    grass_space_start = 2;
+    grass_space = grass_space_start;
+    grass_space_start2 = 0.5;
+    grass_space2 = grass_space_start2;
+    
+    for(i = 0; i < room_width/128; i++)
+    {
+        grass_space -= 0.5;
+        chance = random_range(0,100);
+        if(i > room_width/128 - 1)
+        {
+        instance_create(x+i*128-20,y-53+floor_bump*64,obj_arrow);
+        }
+        instance_create(x+i*128,y+floor_bump*64,obj_grasstile01);
+        instance_create(x+i*128,y-57+floor_bump*64,obj_grassback02);
+        if (chance > 73 && i >= point1)
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_rocksquid);
+        }
+        else
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile02);
+        }
+        instance_create(x+i*128+64,y-57+floor_bump*64,obj_grassback01);
+        if(grass_space == 0)
+            {
+                if(chance > 80)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock1);
+                }
+                if(chance > 60 and chance < 80)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock2);
+                }
+                if(chance <= 50)
+                {
+                instance_create(x+i*128+64,y-55+floor_bump*64,obj_smalltree);
+                }
+            grass_space = grass_space_start;
+            }
+        if(i == point1 or i == point2 or i == point3 or i == point4)
+            {
+                if(floor_bump == 2)
+                {
+                floor_bump -= 1;
+                }
+                else
+                {
+                floor_bump += irandom_range(-1,1);
+                }
+            create = true;
+            }
+    }
+    instance_create(0,0,obj_pitspawn);
+    instance_destroy();
+    }
+    break;
+    
+    // Level 4
+        case rm_level04:
+    {
+    randomize();
+    floor_bump = 0;
+    point1 = irandom_range(3,8);
+    point2 = irandom_range(10,15);
+    point3 = irandom_range(17,22);
+    point4 = irandom_range(24,29);
+    create = true;
+    current_point1 = point1;
+    current_point2 = point2;
+    grass_space_start = 1.5;
+    grass_space = grass_space_start;
+    grass_space_start2 = 0.5;
+    grass_space2 = grass_space_start2;
+    
+    for(i = 0; i < room_width/128; i++)
+    {
+        grass_space -= 0.5;
+        chance = random_range(0,100);
+        if(i > room_width/128 - 1)
+        {
+        instance_create(x+i*128-20,y-53+floor_bump*64,obj_arrow);
+        }
+        instance_create(x+i*128,y+floor_bump*64,obj_grasstile03);
+        instance_create(x+i*128,y-57+floor_bump*64,obj_grassback04);
+        if (chance > 85 && i >= point1)
+        {
+        instance_create(x+i*128+64,y+floor_bump*64-50,obj_tentman);
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile04);
+        }
+        else
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile04);
+        }
+        instance_create(x+i*128+64,y-57+floor_bump*64,obj_grassback03);
+        if(grass_space == 0)
+            {
+                if(chance > 60)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock1);
+                }
+                if(chance <= 55)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock2);
+                }
+            grass_space = grass_space_start;
+            }
+        if(i == point1 or i == point2 or i == point3 or i == point4)
+            {
+                if(floor_bump == 2)
+                {
+                floor_bump -= 1;
+                }
+                else
+                {
+                floor_bump += irandom_range(-1,1);
+                }
+            create = true;
+            }
+    }
+    instance_create(0,0,obj_pitspawn);
+    instance_destroy();
+    }
+    break;
+    
+       // Level 5
+        case rm_level05:
+    {
+    randomize();
+    floor_bump = 0;
+    point1 = irandom_range(3,8);
+    point2 = irandom_range(10,15);
+    point3 = irandom_range(17,22);
+    point4 = irandom_range(24,29);
+    create = true;
+    current_point1 = point1;
+    current_point2 = point2;
+    grass_space_start = 2;
+    grass_space = grass_space_start;
+    grass_space_start2 = 0.5;
+    grass_space2 = grass_space_start2;
+    
+    for(i = 0; i < room_width/128; i++)
+    {
+        grass_space -= 0.5;
+        chance = random_range(0,100);
+        if(i > room_width/128 - 1)
+        {
+        instance_create(x+i*128,y-55+floor_bump*64,obj_arrow);
+        }
+        instance_create(x+i*128,y+floor_bump*64,obj_grasstile03);
+        instance_create(x+i*128,y-57+floor_bump*64,obj_grassback04);
+        if (chance > 80 && i >= point1)
+        {
+        instance_create(x+i*128+64,y+floor_bump*64-50,obj_tentman);
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile04);
+        }
+        else
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile04);
+        }
+        instance_create(x+i*128+64,y-57+floor_bump*64,obj_grassback03);
+        if(grass_space == 0)
+            {
+                if(chance > 60)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock1);
+                }
+                if(chance <= 55)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock2);
+                }
+            grass_space = grass_space_start;
+            }
+        if(i == point1 or i == point2 or i == point3 or i == point4)
+            {
+                if(floor_bump == 2)
+                {
+                floor_bump -= 1;
+                }
+                else
+                {
+                floor_bump += irandom_range(-1,1);
+                }
+            create = true;
+            }
+    }
+    instance_create(0,0,obj_pitspawn);
+    instance_destroy();
+    }
+    break;
+    
+       // Level 6
+        case rm_level06:
+    {
+    randomize();
+    floor_bump = 0;
+    point1 = irandom_range(3,8);
+    point2 = irandom_range(10,15);
+    point3 = irandom_range(17,22);
+    point4 = irandom_range(24,29);
+    create = true;
+    current_point1 = point1;
+    current_point2 = point2;
+    grass_space_start = 2;
+    grass_space = grass_space_start;
+    grass_space_start2 = 0.5;
+    grass_space2 = grass_space_start2;
+    
+    for(i = 0; i < room_width/128; i++)
+    {
+        grass_space -= 0.5;
+        chance = random_range(0,100);
+        if(i > room_width/128 - 1)
+        {
+        instance_create(x+i*128,y-53+floor_bump*64,obj_arrow);
+        }
+        instance_create(x+i*128,y+floor_bump*64,obj_grasstile03);
+        instance_create(x+i*128,y-57+floor_bump*64,obj_grassback04);
+        if (chance > 77 && i >= point1)
+        {
+        instance_create(x+i*128+64,y+floor_bump*64-50,obj_tentman);
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile04);
+        }
+        else
+        {
+        instance_create(x+i*128+64,y+floor_bump*64,obj_grasstile04);
+        }
+        instance_create(x+i*128+64,y-57+floor_bump*64,obj_grassback03);
+        if(grass_space == 0)
+            {
+                if(chance > 60)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock1);
+                }
+                if(chance <= 50)
+                {
+                instance_create(x+i*128+64,y-50+floor_bump*64,obj_rock2);
+                }
+            grass_space = grass_space_start;
+            }
+        if(i == point1 or i == point2 or i == point3 or i == point4)
+            {
+                if(floor_bump == 2)
+                {
+                floor_bump -= 1;
+                }
+                else
+                {
+                floor_bump += irandom_range(-1,1);
+                }
+            create = true;
+            }
+    }
+    instance_create(0,0,obj_pitspawn);
+    instance_destroy();
+    }
+    break;
+}
