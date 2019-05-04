@@ -1,0 +1,167 @@
+Simple state machine for a goblin character
+switch(state)
+{
+// Rest state
+    case "rest_state":
+    {
+        x = start_x;
+        if(!holding)
+            {
+            sprite_index = spr_goblin_resting;
+            }
+        if(holding)
+            {
+            sprite_index = spr_goblin_axeresting;
+            }
+        image_xscale = start_face;
+        image_speed = 0.08;
+        hspd = 0;
+        vspd = 0;
+        if(distance_to_object(obj_player) < 100 && obj_player.armor != "goblin_garb")
+        {
+        state = "chase_state";
+        }
+    }
+    break;
+// Suprised state
+    case "suprised_state":
+    {
+    
+    }
+    break;
+// Idle state    
+    case "idle_state":
+    {
+        if(distance_to_object(obj_player) > 100)
+        {
+        hspd = 0;
+        vspd = (min(7,vspd+0.05));
+            if(paused = true)
+                {
+                instance_create(x,y,obj_goblin_pause);
+                paused = false;
+                }
+        }
+        else
+            {
+            state = "chase_state";
+            }
+    }
+    break;
+// Chase state    
+    case "chase_state":
+    {
+        if(holding == false)
+            {
+            state = "arm_state";
+            }
+        dir = sign(obj_player.x - x);
+        hspd = dir * 1.25;
+        vspd = (min(7,vspd+0.05));
+        if(distance_to_object(obj_player) > 160)
+            {
+            paused = true;
+            state = "idle_state";
+            }
+    }
+    break;
+// Arm state    
+    case "arm_state":
+    {
+        dir = sign(obj_axerack.x - x);
+        hspd = dir * 1.25;
+        vspd = (min(7,vspd+0.05));
+        if(place_meeting(x,y,obj_axerack))
+            {
+            obj_axerack.axes -= 1;
+            holding = true;
+            state = "chase_state";
+            }
+    }
+    break;
+// Return state    
+    case "return_state":
+    {
+        if (distance_to_object(obj_player) > 100)
+        {
+            dir = sign(start_x - x);
+            hspd = dir * 1.25;
+            vspd = (min(7,vspd+0.05));
+            if (x = start_x)
+                {
+                state = "rest_state";
+                }
+        }
+        else
+            {
+            state = "chase_state";
+            }
+    }
+    break;
+}
+
+if (state != "rest_state")
+{
+scr_physics_goblin();
+}
+
+if(hp == 0)
+{
+instance_destroy();
+}
+
+Platformer physics system (used by the goblin object)
+// Horizontal collision
+if (place_meeting(x+hspd,y,obj_collision)){
+    while(!place_meeting(x+sign(hspd),round(y),obj_collision)){
+    x += sign(hspd);
+    }
+    hspd = 0;
+}
+x += hspd;
+
+// Vertical collision
+if (place_meeting(x,y+vspd,obj_collision)){
+    while(!place_meeting(round(x),round(y+sign(vspd)),obj_collision)){
+    y += sign(vspd);
+    }
+    vspd = 0;
+}
+y += vspd;
+
+// Control the sprites
+if (yprevious != y){
+    sprite_index = jump_sprite;
+    image_speed = 0;
+    if (vspd < 0){
+    image_index = 0;
+    }
+    if (vspd == 0){
+    image_index = 1;
+    }
+    if (vspd > 0){
+    image_index = 2;
+    }
+}
+else {
+    if (xprevious != x){
+    sprite_index = walk_sprite;
+    image_speed = 0.14;
+    }
+    else {
+     if (state != rest_state)
+        {
+        sprite_index = idle_sprite;
+        image_speed = 0.14;
+        }
+    }
+}
+// Control the direction that the object is facing
+
+// Right and left
+if (xprevious < x){
+image_xscale = 1;
+}
+else if (xprevious > x){
+image_xscale = -1;
+}
